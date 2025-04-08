@@ -30,7 +30,6 @@ export const AuthProvider = ({ children }) => {
 
       if (response.data && response.data.data) {
         setUser(response.data.data);  // Set user data after successful validation
-        console.log("Setting user to:", response.data.data);
       }
     } catch (error) {
       console.error('Error validating token:', error);
