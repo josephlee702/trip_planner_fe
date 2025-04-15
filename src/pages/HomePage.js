@@ -31,9 +31,14 @@ const HomePage = ({ darkMode }) => {
 
   return (
     <div className="container mt-4">
+    <div className="d-flex justify-content-between align-items-center mb-3">
       <h1 className={`display-4 ${darkMode ? "text-light" : "text-dark"}`}>
         Your Trips
       </h1>
+      <Link to="/trips/new" className="btn btn-success">
+        + Create Trip
+      </Link>
+    </div>
   
       {trips.length === 0 ? (
         <p className={darkMode ? "text-light" : "text-dark"}>
