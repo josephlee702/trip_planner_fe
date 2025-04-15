@@ -32,7 +32,7 @@ const TripDetails = () => {
   return (
     <div>
       <h2>{trip.name}</h2>
-      <p>{trip.start_date} – {trip.end_date}</p>
+      <p><b>Dates:</b> {trip.start_date} – {trip.end_date}</p>
       <p>{trip.description}</p>
     </div>
   );
