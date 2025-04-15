@@ -8,9 +8,6 @@ import { AuthProvider, AuthContext } from "./context/AuthContext";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const App = () => {
-  // We are now consuming the user context and logout function
-  const { user, logout } = useContext(AuthContext); 
-
   const [darkMode, setDarkMode] = useState(localStorage.getItem("theme") === "dark");
 
   // Apply dark theme class to body element
@@ -23,26 +20,37 @@ const App = () => {
     localStorage.setItem("theme", darkMode ? "dark" : "light");
   }, [darkMode]);
 
-  // Handle logout
+  return (
+    <AuthProvider>
+      <InnerApp darkMode={darkMode} setDarkMode={setDarkMode} />
+    </AuthProvider>
+  );
+};
+
+const InnerApp = ({ darkMode, setDarkMode }) => {
+  const { user, logout } = useContext(AuthContext);
+
   const handleLogout = () => {
-    logout(); // Calling the logout function from AuthContext
+    logout();
     window.location.reload();
   };
 
   return (
-    <AuthProvider>
-      <Router>
-        {/* Pass the user and handleLogout to NavBar */}
-        <NavBar user={user} handleLogout={handleLogout} darkMode={darkMode} setDarkMode={setDarkMode} />
-        <main className="p-4">
-          <Routes>
-            <Route path="/" element={<HomePage darkMode={darkMode} />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-          </Routes>
-        </main>
-      </Router>
-    </AuthProvider>
+    <Router>
+      <NavBar
+        user={user}
+        handleLogout={handleLogout}
+        darkMode={darkMode}
+        setDarkMode={setDarkMode}
+      />
+      <main className="p-4">
+        <Routes>
+          <Route path="/" element={<HomePage darkMode={darkMode} />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+        </Routes>
+      </main>
+    </Router>
   );
 };
 

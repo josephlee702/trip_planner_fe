@@ -1,8 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import axios from "axios";
 
-export const AuthContext = createContext({
-});
+export const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -37,15 +36,20 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // this fetch user data and sets user when the page is refreshed but user is logged in already
   useEffect(() => {
-    const accessToken = localStorage.getItem("access-token");
-    if (accessToken) {
-      fetchUserData();  // Only fetch user data if there's a token
-    }
-  }, []);  // The empty dependency array ensures this only runs on mount
+      fetchUserData();
+  }, []); 
+
+  const logout = () => {
+    localStorage.removeItem("access-token");
+    localStorage.removeItem("client");
+    localStorage.removeItem("uid");
+    setUser(null);
+  }
 
   return (
-    <AuthContext.Provider value={{ user, fetchUserData }}>
+    <AuthContext.Provider value={{ user, fetchUserData, logout }}>
       {children}
     </AuthContext.Provider>
   );
