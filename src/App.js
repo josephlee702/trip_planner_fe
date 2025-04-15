@@ -6,6 +6,7 @@ import Signup from "./components/Signup";
 import Login from "./components/Login";
 import { AuthProvider, AuthContext } from "./context/AuthContext";
 import TripDetails from "./components/TripDetails";
+import CreateTrip from "./components/CreateTrip";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const App = () => {
@@ -50,6 +51,7 @@ const InnerApp = ({ darkMode, setDarkMode }) => {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/trips/:id" element={<TripDetails />} />
+          <Route path="/trips/new" element={<CreateTrip />} />
         </Routes>
       </main>
     </Router>
