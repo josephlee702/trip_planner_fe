@@ -25,7 +25,9 @@ const HomePage = ({ darkMode }) => {
         console.error("Error fetching trips:", error);
       }
     };
-    fetchTrips();
+    if (user) {
+      fetchTrips();
+    }
   }, [user]);
   
 
@@ -35,14 +37,19 @@ const HomePage = ({ darkMode }) => {
       <h1 className={`display-4 ${darkMode ? "text-light" : "text-dark"}`}>
         Your Trips
       </h1>
-      <Link to="/trips/new" className="btn btn-success">
-        + Create Trip
-      </Link>
-    </div>
-  
+      {user ? (
+          <Link to="/trips/new" className="btn btn-success">
+            + Create Trip
+          </Link>
+        ) : (
+          <p className={darkMode ? "text-light" : "text-dark"}>
+          </p>
+        )}
+      </div>
+      
       {trips.length === 0 ? (
         <p className={darkMode ? "text-light" : "text-dark"}>
-          You don't have any trips yet.
+        {user ? "You don't have any trips yet." : "Please log in to view your trips."}
         </p>
       ) : (
         <div className="row mt-4">
