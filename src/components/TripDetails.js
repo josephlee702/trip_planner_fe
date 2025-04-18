@@ -42,20 +42,6 @@ const TripDetails = () => {
   const handleInputChange = (e) => {
     setItineraryData({ ...itineraryData, [e.target.name]: e.target.value });
   };
-
-  useEffect(() => {
-    const fetchTripDetails = async () => {
-      try {
-        const response = await api.get(`/trips/${id}`);
-        setTrip(response.data);
-        setItineraries(response.data.itineraries);
-      } catch (error) {
-        console.error("Error fetching trip details:", error);
-      }
-    };
-  
-    fetchTripDetails();
-  }, [id]);
   
 
   const handleAddItinerary = async () => {
