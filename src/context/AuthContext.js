@@ -28,11 +28,10 @@ export const AuthProvider = ({ children }) => {
       });
 
       if (response.data && response.data.data) {
-        setUser(response.data.data);  // Set user data after successful validation
+        setUser(response.data.data);
       }
     } catch (error) {
       console.error('Error validating token:', error);
-      // Handle invalid token or error
     }
   };
 
