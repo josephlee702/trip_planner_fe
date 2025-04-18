@@ -6,7 +6,7 @@ import { Collapse } from "react-bootstrap";
 
 const TripDetails = () => {
   const { id } = useParams();
-  const {user, fetchUserData} = useContext(AuthContext);
+  const {user} = useContext(AuthContext);
   const [trip, setTrip] = useState(null);
   const [itineraries, setItineraries] = useState([]);
   const [showForm, setShowForm] = useState(false);
@@ -37,7 +37,7 @@ const TripDetails = () => {
     };
 
     fetchTrip();
-  }, [id, user, fetchUserData]);
+  }, [id]);
 
   const handleInputChange = (e) => {
     setItineraryData({ ...itineraryData, [e.target.name]: e.target.value });
@@ -192,7 +192,7 @@ const TripDetails = () => {
                 <div className="card-body">
                   <p><strong>Start:</strong> {itinerary.start_date}</p>
                   <p><strong>End:</strong> {itinerary.end_date}</p>
-                  <p>{itinerary.description}</p>
+                  <p><strong>Description:</strong> {itinerary.description}</p>
                 </div>
               </Collapse>
             </div>
