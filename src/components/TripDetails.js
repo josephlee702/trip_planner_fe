@@ -96,7 +96,7 @@ const TripDetails = () => {
 
   const handleDeleteDay = async (dayId) => {
     try {
-      await api.delete(`/itineraries/${dayId}`, {
+      await api.delete(`/trips/${trip.id}/itineraries/${dayId}`, {
         headers: {
           "access-token": localStorage.getItem("access-token"),
           "client": localStorage.getItem("client"),
