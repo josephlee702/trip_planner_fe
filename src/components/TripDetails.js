@@ -10,13 +10,13 @@ const TripDetails = () => {
   const [trip, setTrip] = useState(null);
   const [itineraries, setItineraries] = useState([]);
   const [showForm, setShowForm] = useState(false);
-  const [dayData, setDayData] = useState({
+  const [itineraryData, setItineraryData] = useState({
     name: "",
     start_date: "",
     end_date: "",
     description: "",
   });
-  const [openDayIds, setOpenDayIds] = useState({});
+  const [openItineraryIds, setOpenItineraryIds] = useState({});
 
   useEffect(() => {
     const fetchTrip = async () => {
@@ -40,7 +40,7 @@ const TripDetails = () => {
   }, [id, user, fetchUserData]);
 
   const handleInputChange = (e) => {
-    setDayData({ ...dayData, [e.target.name]: e.target.value });
+    setItineraryData({ ...itineraryData, [e.target.name]: e.target.value });
   };
 
   useEffect(() => {
@@ -58,13 +58,13 @@ const TripDetails = () => {
   }, [id]);
   
 
-  const handleAddDay = async () => {
+  const handleAddItinerary = async () => {
     try {
       const response = await api.post(
         `/trips/${trip.id}/itineraries`,
         {
           itinerary: {
-            ...dayData,
+            ...itineraryData,
             trip_id: trip.id,
             user_id: user.id,
           },
@@ -82,7 +82,7 @@ const TripDetails = () => {
       );
 
       setItineraries([...itineraries, response.data]);
-      setDayData({
+      setItineraryData({
         name: "",
         start_date: "",
         end_date: "",
@@ -94,9 +94,9 @@ const TripDetails = () => {
     }
   };
 
-  const handleDeleteDay = async (dayId) => {
+  const handleDeleteItinerary = async (itineraryId) => {
     try {
-      await api.delete(`/trips/${trip.id}/itineraries/${dayId}`, {
+      await api.delete(`/trips/${trip.id}/itineraries/${itineraryId}`, {
         headers: {
           "access-token": localStorage.getItem("access-token"),
           "client": localStorage.getItem("client"),
@@ -104,14 +104,14 @@ const TripDetails = () => {
         },
         withCredentials: true,
       });
-      setItineraries(itineraries.filter((day) => day.id !== dayId));
+      setItineraries(itineraries.filter((itinerary) => itinerary.id !== itineraryId));
     } catch (error) {
       console.error("Error deleting itinerary:", error);
     }
   };
 
-  const toggleDay = (id) => {
-    setOpenDayIds((prev) => ({
+  const toggleItinerary = (id) => {
+    setOpenItineraryIds((prev) => ({
       ...prev,
       [id]: !prev[id],
     }));
@@ -126,73 +126,73 @@ const TripDetails = () => {
       <p><b>Destinations:</b> {trip.destinations.join(", ")}</p>
 
       <button className="btn btn-success my-3" onClick={() => setShowForm(!showForm)}>
-        {showForm ? "Cancel" : "➕ Add Day"}
+        {showForm ? "Cancel" : "➕ Add Itinerary"}
       </button>
 
       {showForm && (
         <div className="card p-3 mb-4 shadow-sm">
-          <h5>Add a Day</h5>
+          <h5>Add an Itinerary</h5>
           <input
             type="text"
             name="name"
-            placeholder="Day Name"
-            value={dayData.name}
+            placeholder="Itinerary Name"
+            value={itineraryData.name}
             onChange={handleInputChange}
             className="form-control mb-2"
           />
           <input
             type="date"
             name="start_date"
-            value={dayData.start_date}
+            value={itineraryData.start_date}
             onChange={handleInputChange}
             className="form-control mb-2"
           />
           <input
             type="date"
             name="end_date"
-            value={dayData.end_date}
+            value={itineraryData.end_date}
             onChange={handleInputChange}
             className="form-control mb-2"
           />
           <textarea
             name="description"
             placeholder="Description"
-            value={dayData.description}
+            value={itineraryData.description}
             onChange={handleInputChange}
             className="form-control mb-2"
           />
-          <button className="btn btn-primary" onClick={handleAddDay}>
-            Save Day
+          <button className="btn btn-primary" onClick={handleAddItinerary}>
+            Save Itinerary
           </button>
         </div>
       )}
 
-      <h4>Itinerary</h4>
+      <h4>Itineraries</h4>
       {Array.isArray(itineraries) && itineraries.length === 0 ? (
         <p>Add your first itinerary!</p>
       ) : (
         <div className="accordion">
-          {Array.isArray(itineraries) && itineraries.map((day) => (
-            <div key={day.id} className="card mb-2 shadow-sm">
+          {Array.isArray(itineraries) && itineraries.map((itinerary) => (
+            <div key={itinerary.id} className="card mb-2 shadow-sm">
               <div className="card-header d-flex justify-content-between align-items-center">
                 <button
                   className="btn btn-link text-start text-decoration-none"
-                  onClick={() => toggleDay(day.id)}
+                  onClick={() => toggleItinerary(itinerary.id)}
                 >
-                  <strong>{day.name}</strong>
+                  <strong>{itinerary.name}</strong>
                 </button>
                 <button
                   className="btn btn-sm btn-outline-danger"
-                  onClick={() => handleDeleteDay(day.id)}
+                  onClick={() => handleDeleteItinerary(itinerary.id)}
                 >
                   🗑️ Delete
                 </button>
               </div>
-              <Collapse in={openDayIds[day.id]}>
+              <Collapse in={openItineraryIds[itinerary.id]}>
                 <div className="card-body">
-                  <p><strong>Start:</strong> {day.start_date}</p>
-                  <p><strong>End:</strong> {day.end_date}</p>
-                  <p>{day.description}</p>
+                  <p><strong>Start:</strong> {itinerary.start_date}</p>
+                  <p><strong>End:</strong> {itinerary.end_date}</p>
+                  <p>{itinerary.description}</p>
                 </div>
               </Collapse>
             </div>
