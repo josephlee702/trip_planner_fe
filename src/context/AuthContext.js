@@ -48,6 +48,7 @@ export const AuthProvider = ({ children }) => {
   }
 
   return (
+    // this line lets the children of AuthProvider (like TripDetails.js) have access to user, fetchUserData, and logout through "useContext(AuthContext)"
     <AuthContext.Provider value={{ user, fetchUserData, logout }}>
       {children}
     </AuthContext.Provider>
