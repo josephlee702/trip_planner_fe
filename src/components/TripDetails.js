@@ -105,7 +105,7 @@ const TripDetails = () => {
 
   return (
     <div>
-      <h2>{trip.name}</h2>
+      <h1><u>{trip.name}</u></h1>
       <p><b>Dates:</b> {trip.start_date} – {trip.end_date}</p>
       <p><b>Destinations:</b> {trip.destinations.join(", ")}</p>
 
