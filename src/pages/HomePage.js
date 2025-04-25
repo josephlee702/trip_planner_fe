@@ -29,6 +29,25 @@ const HomePage = ({ darkMode }) => {
       fetchTrips();
     }
   }, [user]);
+
+  const handleDelete = async (tripId) => {
+    try {
+      await api.delete(`/trips/${tripId}`, {
+        headers: {
+          "access-token": localStorage.getItem("access-token"),
+          "client": localStorage.getItem("client"),
+          "uid": localStorage.getItem("uid"),
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+        },
+        withCredentials: true,
+      });
+  
+      setTrips((prevTrips) => prevTrips.filter((trip) => trip.id !== tripId));
+    } catch (error) {
+      console.error("Error deleting trip:", error);
+    }
+  };
   
 
   return (
@@ -64,6 +83,16 @@ const HomePage = ({ darkMode }) => {
                   <Link to={`/trips/${trip.id}`} className="btn btn-primary">
                     View Itinerary
                   </Link>
+                  <button
+                    className="btn btn-danger ms-2"
+                    onClick={() => {
+                      if (window.confirm("Are you sure you want to delete this trip?")) {
+                        handleDelete(trip.id);
+                      }
+                    }}
+                  >
+                    Delete
+                  </button>
                 </div>
               </div>
             </div>
