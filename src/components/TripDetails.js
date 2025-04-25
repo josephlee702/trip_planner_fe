@@ -12,8 +12,7 @@ const TripDetails = () => {
   const [showForm, setShowForm] = useState(false);
   const [itineraryData, setItineraryData] = useState({
     name: "",
-    start_date: "",
-    end_date: "",
+    date: "",
     description: "",
   });
   const [openItineraryIds, setOpenItineraryIds] = useState({});
@@ -70,8 +69,7 @@ const TripDetails = () => {
       setItineraries([...itineraries, response.data]);
       setItineraryData({
         name: "",
-        start_date: "",
-        end_date: "",
+        date: "",
         description: "",
       });
       setShowForm(false);
@@ -128,15 +126,8 @@ const TripDetails = () => {
           />
           <input
             type="date"
-            name="start_date"
-            value={itineraryData.start_date}
-            onChange={handleInputChange}
-            className="form-control mb-2"
-          />
-          <input
-            type="date"
-            name="end_date"
-            value={itineraryData.end_date}
+            name="date"
+            value={itineraryData.date}
             onChange={handleInputChange}
             className="form-control mb-2"
           />
@@ -169,15 +160,17 @@ const TripDetails = () => {
                 </button>
                 <button
                   className="btn btn-sm btn-outline-danger"
-                  onClick={() => handleDeleteItinerary(itinerary.id)}
-                >
+                  onClick={() => {
+                    if (window.confirm("Are you sure you want to delete this itinerary?")) {
+                      handleDeleteItinerary(itinerary.id)};
+                    }}
+                  >
                   🗑️ Delete
                 </button>
               </div>
               <Collapse in={openItineraryIds[itinerary.id]}>
                 <div className="card-body">
-                  <p><strong>Start:</strong> {itinerary.start_date}</p>
-                  <p><strong>End:</strong> {itinerary.end_date}</p>
+                  <p><strong>Date:</strong> {itinerary.date}</p>
                   <p><strong>Description:</strong> {itinerary.description}</p>
                 </div>
               </Collapse>
