@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import "./App.css"
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage";
@@ -25,37 +26,40 @@ const App = () => {
 
   return (
     <AuthProvider>
-      <InnerApp darkMode={darkMode} setDarkMode={setDarkMode} />
+      <Router>
+        <InnerApp darkMode={darkMode} setDarkMode={setDarkMode} />
+      </Router>
     </AuthProvider>
   );
 };
 
 const InnerApp = ({ darkMode, setDarkMode }) => {
   const { user, logout } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
-    window.location.reload();
+    navigate("/");
   };
 
   return (
-    <Router>
-      <NavBar
-        user={user}
-        handleLogout={handleLogout}
-        darkMode={darkMode}
-        setDarkMode={setDarkMode}
-      />
-      <main className="p-4">
-        <Routes>
-          <Route path="/" element={<HomePage darkMode={darkMode} />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/trips/:id" element={<TripDetails />} />
-          <Route path="/trips/new" element={<CreateTrip />} />
-        </Routes>
-      </main>
-    </Router>
+    <>
+    <NavBar
+      user={user}
+      handleLogout={handleLogout}
+      darkMode={darkMode}
+      setDarkMode={setDarkMode}
+    />
+    <main className="p-4">
+      <Routes>
+        <Route path="/" element={<HomePage darkMode={darkMode} />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/trips/:id" element={<TripDetails />} />
+        <Route path="/trips/new" element={<CreateTrip />} />
+      </Routes>
+    </main>
+    </>
   );
 };
 
